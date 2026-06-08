@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.schoolwebsite.demo.exception.UserNotFoundException;
 import com.schoolwebsite.demo.model.User;
 import com.schoolwebsite.demo.repository.UserRepository;
 
@@ -30,19 +31,19 @@ public class UserService {
 
     public User getUserById(Long id)
     {
-         return userRepository.findById(id)
-                .orElseThrow( () -> new RuntimeException("User not found with id : " + id));
+        return userRepository.findById(id)
+                .orElseThrow( () -> new UserNotFoundException("User not found with id : " + id));
     }
     // Business Action: Find a user by email, or throw a clean error if missing
     public User getUserByEmail(String email) {
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
+                .orElseThrow(() -> new UserNotFoundException("User not found with email: " + email));
     }
 
     public User getUserByName(String name)
     {
         return userRepository.findByName(name)
-                .orElseThrow(() -> new RuntimeException("User not found with name : " + name));
+                .orElseThrow(() -> new UserNotFoundException("User not found with name : " + name));
     }
 
     // Business Action: Get everyone in the database

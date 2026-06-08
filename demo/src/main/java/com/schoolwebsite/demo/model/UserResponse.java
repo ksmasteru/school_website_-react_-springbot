@@ -1,7 +1,7 @@
 package com.schoolwebsite.demo.model;
 
 public class UserResponse {
-    private long Id;
+    private long id;
     private String name;
     private String email;
 
@@ -9,8 +9,25 @@ public class UserResponse {
     public UserResponse(User user)
     {
         System.out.println("new user added " + user.getEmail());
-        this.Id = user.getId();
+        this.id = user.getId();
         this.name = user.getName();
         this.email = user.getEmail();
+    }
+
+    // mr jackson needs setters and getters to do his job : converting this class to JSON .
+    
+    public long getId()
+    {
+        return this.id;
+    }
+    
+    public String getName()
+    {
+        return this.name;
+    }
+
+    public String getEmail()
+    {
+        return this.email;
     }
 }
