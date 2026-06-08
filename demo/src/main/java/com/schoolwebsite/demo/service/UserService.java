@@ -28,14 +28,33 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public User getUserById(Long id)
+    {
+         return userRepository.findById(id)
+                .orElseThrow( () -> new RuntimeException("User not found with id : " + id));
+    }
     // Business Action: Find a user by email, or throw a clean error if missing
     public User getUserByEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
     }
 
+    public User getUserByName(String name)
+    {
+        return userRepository.findByName(name)
+                .orElseThrow(() -> new RuntimeException("User not found with name : " + name));
+    }
+
     // Business Action: Get everyone in the database
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    public void deleteUser(long id)
+    {
+        // busines logic : check if user exists
+        boolean userExists = userRepository.findById(id).isPresent();
+        if (userExists)
+            userRepository.deleteById(id);
     }
 }
