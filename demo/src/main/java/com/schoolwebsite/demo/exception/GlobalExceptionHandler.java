@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
 import java.time.LocalDateTime;
-
+import java.util.ArrayList;
 import org.springframework.http.HttpHeaders;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 
 
 @RestControllerAdvice
@@ -46,6 +48,21 @@ public class GlobalExceptionHandler {
             return new ResponseEntity<>(errorFormat, HttpStatus.BAD_REQUEST);
         }
     
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorFormat> handleMethodValidationException(
+        MethodArgumentNotValidException ex, WebRequest request)
+    {
+
+        // going to make custom errors
+        String Message = new String("Validation failed");
+        List<String> Errors = new ArrayList<>;
+        ErrorFormat errorFormat = new ErrorFormat(
+            LocalDateTime.now(),
+            ex.getMessage(),
+            request.getDescription(false)
+        );
+        return new ResponseEntity<>(errorFormat, HttpStatus.BAD_REQUEST);
+    }
     // handling non coverd exceptions
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorFormat> handleException(

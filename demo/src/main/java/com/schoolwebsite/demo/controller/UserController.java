@@ -17,7 +17,7 @@ import com.schoolwebsite.demo.model.UserResponse;
 import com.schoolwebsite.demo.service.UserService;
 import com.schoolwebsite.demo.model.UserRequest;
 import org.springframework.http.HttpStatus;
-
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/users")
@@ -65,8 +65,11 @@ public class UserController {
         } */
     
     // update return responseEntity with status code 201.
+    // update 2 ensuring data validation.
+    // if  the parameter isnt valid a correspong exception is thrown
     @PostMapping("/")
-    public ResponseEntity<UserResponse> addNewUser(@RequestBody UserRequest user)
+    public ResponseEntity<UserResponse> addNewUser(
+            @Valid @RequestBody UserRequest user)
     {
         User newUser = new User(user.getName(), user.getEmail());
         User savedUser = userService.registerUser(newUser);
