@@ -3,6 +3,7 @@ package com.schoolwebsite.demo.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.http.HttpStatusCode;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,10 +11,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.http.ResponseEntity;
 import com.schoolwebsite.demo.model.User;
 import com.schoolwebsite.demo.model.UserResponse;
 import com.schoolwebsite.demo.service.UserService;
+import com.schoolwebsite.demo.model.UserRequest;
+import org.springframework.http.HttpStatus;
+
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -58,17 +63,24 @@ public class UserController {
         "name": "Alice",
         "email": "alice@example.com"
         } */
+    
+    // update return responseEntity with status code 201.
     @PostMapping("/")
-    public UserResponse addNewUser(@RequestBody User user)
+    public ResponseEntity<UserResponse> addNewUser(@RequestBody UserRequest user)
     {
-        User addedUser =  userService.registerUser(user);
-        return new UserResponse(addedUser);
+        User newUser = new User(user.getName(), user.getEmail());
+        User savedUser = userService.registerUser(newUser);
+        UserResponse addedUser = new UserResponse(savedUser);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(addedUser);
     }
 
     @DeleteMapping("/id/{id}")
-    public void deleteUser(@PathVariable long id)
+    public ResponseEntity<Void> deleteUser(@PathVariable long id)
     {
         userService.deleteUser(id);
+        return ResponseEntity
+            .noContent().build();
     }
- 
 }

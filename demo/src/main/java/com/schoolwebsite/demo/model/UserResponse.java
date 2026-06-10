@@ -1,7 +1,7 @@
 package com.schoolwebsite.demo.model;
 
 public class UserResponse {
-    private long id;
+    private Long id;
     private String name;
     private String email;
 

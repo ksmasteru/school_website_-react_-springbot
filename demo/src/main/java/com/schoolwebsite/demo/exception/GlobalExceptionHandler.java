@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 
 import org.springframework.http.HttpHeaders;
 
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -44,5 +45,17 @@ public class GlobalExceptionHandler {
             );
             return new ResponseEntity<>(errorFormat, HttpStatus.BAD_REQUEST);
         }
-        
+    
+    // handling non coverd exceptions
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorFormat> handleException(
+        Exception ex, WebRequest request)
+    {
+        ErrorFormat errorFormat = new ErrorFormat(
+             LocalDateTime.now(),
+             ex.getMessage(),
+             request.getDescription(false)
+        );
+        return new ResponseEntity<>(errorFormat, HttpStatus.INTERNAL_SERVER_ERROR);
+    }      
 }
