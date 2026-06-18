@@ -51,11 +51,14 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    // to fix : should throw an exceptionn i user doesnt exist
     public void deleteUser(long id)
     {
         // busines logic : check if user exists
         boolean userExists = userRepository.findById(id).isPresent();
         if (userExists)
             userRepository.deleteById(id);
+        else
+            throw new UserNotFoundException("User not found");
     }
 }

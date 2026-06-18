@@ -3,22 +3,27 @@ package com.schoolwebsite.demo.exception;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ArrayList;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.util.Map;
+import java.util.HashMap;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ErrorFormat{
-    // timestamp
+
     private LocalDateTime timeStamp;
     private String message;
     private String details;
-    private List<String> Errors;
+    private Map<String, String> Errors;
 
     public ErrorFormat(LocalDateTime time, String message, String details){
         this. timeStamp = time;
         this.message = message;
         this.details = details;
-        this.Errors = new ArrayList<>();
+        this.Errors = new HashMap<>();
     }
 
-    public ErrorFormat(LocalDateTime time, String message, String details, List<String> Errors){
-        this. timeStamp = time;
+    public ErrorFormat(LocalDateTime time, String message, String details, Map<String, String> Errors){
+        this.timeStamp = time;
         this.message = message;
         this.details = details;
         this.Errors = Errors;
@@ -39,7 +44,7 @@ public class ErrorFormat{
         return this.timeStamp;
     }
 
-    public String getErrors()
+    public Map<String, String> getErrors()
     {
         return this.Errors;
     }
